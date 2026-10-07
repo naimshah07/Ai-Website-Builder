@@ -2,25 +2,5 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/**/*.{js,ts}": {
-      "includeFiles": "prisma/schema.prisma,generated/**,dist/**"
-    }
-  },
-  "rewrites": [
-    { "source": "/((?!assets/|favicon\\.svg|robots\\.txt|vercel).*)", "destination": "/dist/server.js" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Credentials", "value": "true" },
-        { "key": "Access-Control-Allow-Origin", "value": "https://client-seven-sand-20.vercel.app" },
-        { "key": "Access-Control-Allow-Headers", "value": "Cookie, Set-Cookie, X-CSRF-Token, Authorization, Content-Type" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS,PATCH" }
-      ]
-    }
-  ]
+  "installCommand": "npm install"
 }
