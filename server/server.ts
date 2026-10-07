@@ -10,8 +10,19 @@ import { stripeWebhook } from './controllers/stripeWebhook.js';
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 
+const trustedOrigins = process.env.TRUSTED_ORIGINS
+  ? process.env.TRUSTED_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
+  : [
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+      'https://client-seven-sand-20.vercel.app',
+      'https://aisitebuilder.site',
+      'https://www.aisitebuilder.site',
+      'https://ai-site-builder-r1a4.onrender.com',
+    ];
+
 const corsOptions = {
-  origin: process.env.TRUSTED_ORIGINS?.split(',') || [],
+  origin: trustedOrigins,
   credentials: true,
 };
 

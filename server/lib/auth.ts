@@ -10,6 +10,9 @@ const trustedOrigins = process.env.TRUSTED_ORIGINS
       .map((origin) => origin.trim())
       .filter(Boolean)
   : [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      "https://client-seven-sand-20.vercel.app",
       "https://aisitebuilder.site",
       "https://www.aisitebuilder.site",
       "https://ai-site-builder-r1a4.onrender.com",

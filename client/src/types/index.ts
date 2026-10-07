@@ -9,7 +9,7 @@ export interface User {
 
 export interface Message {
     id: string;
-    role: any;
+    role: "user" | "assistant" | "system";
     content: string;
     timestamp: string;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Project } from "../types";
 import {
@@ -21,6 +21,7 @@ import ProjectPreview, {
 } from "../components/ProjectPreview";
 import { toast } from "sonner";
 import { authClient} from "@/lib/auth-client";                     
+import { getErrorMessage } from "@/lib/utils";
 
 const Projects = () => {
   const {projectId} = useParams();
@@ -40,20 +41,22 @@ const Projects = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const previewRef = useRef<ProjectPreviewRef>(null);
+  const pollingProjectId = project?.id;
+  const pollingProjectCode = project?.current_code;
 
-  const fetchProject = async () => {
+  const fetchProject = useCallback(async () => {
     try {
       const { data } = await api.get(`/api/user/project/${projectId}`);
       setProject(data.project);
       setIsGenerating(data.project.current_code ? false : true);
       setLoading(false);
-    } catch (error:any) {
-      toast.error(error?.response?.data?.message || error.message);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
       console.log(error);
       setLoading(false);
       navigate("/projects");
     }
-  }
+  }, [projectId, navigate]);
   const saveProject = async () => {
     if(!previewRef.current) return;
     const code = previewRef.current.getCode();
@@ -62,8 +65,8 @@ const Projects = () => {
     try {
       const { data } = await api.put(`/api/project/save/${projectId}`,{code});
       toast.success(data.message);
-    } catch (error:any) {
-      toast.error(error?.response?.data?.message || error.message);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
       console.log(error);
     } finally {
       setIsSaving(false);
@@ -93,8 +96,8 @@ const Projects = () => {
       const { data } = await api.get(`/api/user/publish-toggle/${projectId}`);
       toast.success(data.message);
       setProject((prev) => prev ? {...prev, isPublished: !prev.isPublished} : null);
-    } catch (error:any) {
-      toast.error(error?.response?.data?.message || error.message);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
       console.log(error);
     }
     
@@ -107,14 +110,14 @@ const Projects = () => {
       navigate('/');
       toast('Please sign in to access your projects');
     }
-  }, [session?.user]);
+  }, [session?.user, isPending, navigate, fetchProject]);
 
   useEffect(() => {
-    if(project && !project.current_code){
+    if(pollingProjectId && !pollingProjectCode){
       const intervalId = setInterval(fetchProject, 10000);
       return () => clearInterval(intervalId);
     }
-  }, [project]);
+  }, [pollingProjectId, pollingProjectCode, fetchProject]);
 
   if (loading) {
     return (

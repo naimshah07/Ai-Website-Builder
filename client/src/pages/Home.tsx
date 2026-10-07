@@ -4,6 +4,7 @@ import { Loader2Icon } from 'lucide-react';
 import  {useNavigate} from 'react-router-dom';
 import React, { useState } from 'react'
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/utils';
 
 const Home = () => {
 
@@ -25,9 +26,9 @@ const Home = () => {
     const {data} = await api.post('/api/user/project',{initial_prompt: input});
     setLoading(false);
     navigate(`/projects/${data.projectId}`);
-    } catch (error:any) {
+    } catch (error) {
       setLoading(false);
-      toast.error(error?.response?.data?.message || error.message);
+      toast.error(getErrorMessage(error));
       console.log(error);
 
     }

@@ -6,6 +6,7 @@ import api from "@/configs/axios";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { getErrorMessage } from "@/lib/utils";
 
 const MyProjects = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -19,9 +20,9 @@ const MyProjects = () => {
        await api.delete(`/api/project/${projectId}`);
        toast.success('Project deleted successfully');
        fetchProjects();
-    } catch (error:any) {
+    } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || error.message);
+      toast.error(getErrorMessage(error));
     }
 
 
@@ -34,9 +35,9 @@ const MyProjects = () => {
        const {data} = await api.get('/api/user/projects');
        setProjects(data.projects);
        setLoading(false);
-    } catch (error:any) {
+    } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || error.message);
+      toast.error(getErrorMessage(error));
     }
   
  }
@@ -49,7 +50,7 @@ const MyProjects = () => {
     toast.error('Please login to view your projects');
     navigate('/auth/signin');
   }
-}, [session?.user, isPending]);
+}, [session?.user, isPending, navigate]);
 
     // useEffect(() => {
     //   if(session?.user && !isPending) {
@@ -74,7 +75,7 @@ const MyProjects = () => {
 
               <button
                 onClick={() => navigate("/")}
-                className="flex items-center gap-2 text-white px-6 py-2 rounded bg-gradient-to-br from-indigo-500 to-indigo-600 hover:opacity-90 active:scale-95 transition-all"
+                className="flex items-center gap-2 text-white px-6 py-2 rounded bg-linear-to-br from-indigo-500 to-indigo-600 hover:opacity-90 active:scale-95 transition-all"
               >
                 <PlusIcon size={18} />
                 Create New
@@ -94,7 +95,7 @@ const MyProjects = () => {
                     {project.current_code ? (
                       <iframe
                         srcDoc={project.current_code}
-                        className="absolute top-0 left-0 w-[1200px] h-[800px] origin-top-left pointer-events-none scale-[0.22] sm:scale-[0.25]"
+                        className="absolute top-0 left-0 w-300 h-200 origin-top-left pointer-events-none scale-[0.22] sm:scale-[0.25]"
                         sandbox="allow-scripts allow-same-origin"
                       />
                     ) : (
@@ -113,7 +114,7 @@ const MyProjects = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="relative z-10 p-4 text-white bg-gradient-to-b from-transparent via-gray-900/80 to-gray-900 flex flex-col flex-1">
+                  <div className="relative z-10 p-4 text-white bg-linear-to-b from-transparent via-gray-900/80 to-gray-900 flex flex-col flex-1">
                     <div className="flex items-start justify-between">
                       <h2 className="text-lg font-medium line-clamp-2">
                         {project.name}

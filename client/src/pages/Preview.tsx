@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 import { useParams} from "react-router-dom";
 import { Loader2Icon } from "lucide-react";
 import ProjectPreview from "../components/ProjectPreview";
@@ -6,6 +6,7 @@ import type { Project,Version } from "../types";
 import api from "@/configs/axios";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { getErrorMessage } from "@/lib/utils";
 
 const Preview = () => {
 
@@ -14,7 +15,7 @@ const Preview = () => {
    const[code,setCode] = useState('');
    const[loading,setLoading] = useState(true);
  
-  const fetchCode = async () => {
+  const fetchCode = useEffectEvent(async () => {
     try {
       const {data} = await api.get(`/api/project/preview/${projectId}`)
       setCode(data.project.current_code);
@@ -26,15 +27,15 @@ const Preview = () => {
         })
       }
       setLoading(false);    
-    } catch (error:any) {
-      toast.error(error?.response?.data?.message || error.message);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
       console.error(error);
     }
-  }
+  });
  useEffect(() => {
     if(!isPending && session?.user)
-    fetchCode();
-  },[session?.user])
+    void fetchCode();
+  },[session?.user, isPending])
    
   if(loading){
     return (

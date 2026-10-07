@@ -4,6 +4,7 @@ import { BotIcon, EyeIcon,Loader2Icon, SendIcon, UserIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '@/configs/axios';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/utils';
 
 
 interface SidebarProps {
@@ -22,8 +23,8 @@ interface SidebarProps {
     try {
       const {data} = await api.get(`/api/user/project/${project.id}`);
       setProject(data.project);
-    } catch (error:any) {
-       toast.error(error?.response?.data?.message || error.message); 
+     } catch (error) {
+      toast.error(getErrorMessage(error));
        console.log(error);
     }
   }
@@ -42,9 +43,9 @@ interface SidebarProps {
 
 
 
-    } catch (error:any) {
+    } catch (error) {
       setIsGenerating(false);
-      toast.error(error?.response?.data?.message || error.message); 
+      toast.error(getErrorMessage(error));
       console.log(error);
     }
 
@@ -66,7 +67,7 @@ interface SidebarProps {
           setInput('');
           clearInterval(interval);
           setIsGenerating(false);
-      } catch (error:any) {
+      } catch (error) {
         console.log(error); 
     }
   }
