@@ -14,7 +14,7 @@ Link : (https://aisitebuilder.site/) <br>
 - 🤖 **AI Website Generation**
   - Generate full websites (HTML, CSS, JS) from user prompts
   - Modular and scalable generation pipeline
-  - Optimized for **GLM 4.5 Air (Free Tier)**
+  - Optimized for **NVIDIA Nemotron-3 Ultra 550B (Free Tier via OpenRouter)**
 
 - 🔐 **Authentication System**
   - Secure user authentication
@@ -62,16 +62,16 @@ Link : (https://aisitebuilder.site/) <br>
 - PostgreSQL (NeonDB)
 
 ### AI / Generation
-- Z.AI – GLM 4.5 Air (Free Tier)
+- OpenRouter – NVIDIA Nemotron-3 Ultra 550B A55B (Free)
 
 ### Auth & Payments
 - Better Auth
 - Stripe
 
 ### Deployment
-- Frontend: Render
-- Backend: Render
-- Database: NeonDB
+- Frontend: Vercel / Render
+- Backend: Vercel / Render
+- Database: NeonDB (PostgreSQL)
 
 ---
 
@@ -153,10 +153,24 @@ The following features are planned to enhance functionality, scalability, and us
 
 ### Frontend
 ```env
-VITE_BACKEND_URL=https://your-backend-url.com
+VITE_API_URL=https://your-backend-url.com
+VITE_AUTH_CALLBACK_URL=https://your-frontend-url.com
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+```
+
+### Backend
+```env
+NODE_ENV=production
+PORT=3001
 DATABASE_URL=your_neon_db_url
-STRIPE_SECRET_KEY=your_stripe_secret
-AUTH_SECRET=your_auth_secret
+BETTER_AUTH_URL=https://your-backend-url.com
+BETTER_AUTH_SECRET=your_auth_secret_min_32_chars
+TRUSTED_ORIGINS=https://your-frontend-url.com
+AI_API_KEY=sk-or-v1_xxx
+RESEND_API_KEY=re_xxx
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_WEBHOOK_SECRET=whsec_xxx
+```
 
 ## 📦 Installation & Setup
 
@@ -169,71 +183,124 @@ Follow the steps below to run the project locally.
 ```bash
 git clone https://github.com/your-username/ai-site-builder.git
 cd ai-site-builder
-2️⃣ Install Dependencies
-Frontend
+```
+
+### 2️⃣ Install Dependencies
+
+**Frontend**
+```bash
 cd client
 npm install
+```
 
-Backend
+**Backend**
+```bash
 cd server
 npm install
+```
 
-3️⃣ Environment Configuration
+### 3️⃣ Environment Configuration
 
-Create .env files for both frontend and backend.
+Create `.env` files for both frontend and backend (see examples above in **Environment Variables** section).
 
-Frontend (client/.env)
-VITE_BACKEND_URL=https://your-backend-url.com
+**Frontend (`client/.env`)**
+```env
+VITE_API_URL=http://localhost:3001
+```
 
-Backend (server/.env)
+**Backend (`server/.env`)** — min required for local:
+```env
+PORT=3001
 DATABASE_URL=your_neon_database_url
-STRIPE_SECRET_KEY=your_stripe_secret_key
-AUTH_SECRET=your_auth_secret
+BETTER_AUTH_URL=http://localhost:3001
+BETTER_AUTH_SECRET=your_auth_secret_min_32_chars
+TRUSTED_ORIGINS=http://localhost:5173
+AI_API_KEY=sk-or-v1_xxx
+RESEND_API_KEY=re_xxx
+```
 
-4️⃣ Run the Application
-Start Backend Server
+### 4️⃣ Run Database Migrations
+
+```bash
+cd server
+npx prisma migrate dev --config prisma.config.ts
+```
+
+### 5️⃣ Run the Application
+
+**Start Backend Server**
+```bash
 cd server
 npm run dev
+```
 
-Start Frontend Client
+**Start Frontend Client**
+```bash
 cd client
 npm run dev
-
+```
 
 The application will be available at:
+- **Frontend:** http://localhost:5173
+- **Backend:**  http://localhost:3001
 
-Frontend: http://localhost:5173
+---
 
-Backend: http://localhost:3000
-
-🩺 Health Check
+### 🩺 Health Check
 
 The backend exposes a health endpoint used for uptime monitoring and deployment verification.
 
-GET /health
+```
+GET /health → { "status": "ok" }
+```
 
+This endpoint is monitored using Uptime Robot to prevent cold starts.
 
-This endpoint is monitored using Uptime Robot to prevent cold starts on Render.
+---
 
-⚙️ Build for Production
-Frontend
+### ⚙️ Build for Production
+
+**Frontend**
+```bash
+cd client
 npm run build
+```
 
-Backend
-npm run build
-npm start
+**Backend**
+```bash
+cd server
+npm run build   # prisma generate + tsc -b
+npm start       # or node dist/server.js
+```
 
-🚀 Deployment Notes
+---
 
-Frontend and backend are deployed separately on Render
+### 🚀 Deployment (Vercel)
 
-Backend URL is injected into the frontend via environment variables
+Frontend and backend are deployed **separately**:
 
-SPA routing is handled to prevent 404 errors on refresh
+1. **Deploy `server/` folder first** on Vercel (Node.js):
+   - Root Directory: `server`
+   - Framework Preset: `Other`
+   - Build Command: `npm run build`
+   - Install Command: `npm install`
+   - Development Command: `npm run dev`
+   - Add **all backend env vars** in Vercel Project Settings → Environment Variables
+2. Copy the deployed backend URL (e.g. `https://ai-site-builder-api.vercel.app`)
+3. **Deploy `client/` folder** on Vercel (React/Vite):
+   - Root Directory: `client`
+   - Framework Preset: `Vite`
+   - Env var: `VITE_API_URL=<your-deployed-backend-url>`
+   - Env var: `VITE_AUTH_CALLBACK_URL=<your-deployed-frontend-url>`
+4. **Update backend `TRUSTED_ORIGINS`** and `BETTER_AUTH_URL` with the live frontend/backend URLs.
 
-PostgreSQL is hosted on NeonDB
+Backend URL is injected into the frontend via environment variables.
+SPA routing is handled to prevent 404 errors on refresh.
+PostgreSQL is hosted on NeonDB.
 
-🤝 Contributing
+---
+
+## 🤝 Contributing
 
 Contributions are welcome and appreciated!
 

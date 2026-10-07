@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon --exec tsx server.ts",
-    "build": "prisma generate",
+    "build": "prisma generate --config prisma.config.ts && tsc -b",
     "start": "tsx server.ts"
   },
   "dependencies": {
