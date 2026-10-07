@@ -1,32 +1,26 @@
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react'
 
-export interface SelectedElement {
-  tagName: string;
-  className: string;
-  text: string;
-  styles: {
-    padding: string;
-    margin: string;
-    color: string;
-    backgroundColor: string;
-    fontSize: string;
-  };
-}
-
-export type EditorUpdates = Partial<Omit<SelectedElement, 'styles'>> & {
-  styles?: Partial<SelectedElement['styles']>;
-};
-
 interface EditorPanelProps {
-  selectedElement: SelectedElement | null;
-    onUpdate: (updates: EditorUpdates) => void;
+  selectedElement: {
+    tagName: string;
+    className:string;
+    text:string;
+      styles:{
+        padding:string;
+        margin:string;
+        color:string;
+        backgroundColor:string;
+        fontSize:string;
+      };
+  } | null;
+    onUpdate: (updates:any) => void;
     onClose: () => void;
 }
 
 const EditorPanel = ({selectedElement,onUpdate,onClose}: EditorPanelProps) => {
     
-    const[values,setValues] = useState<SelectedElement | null>(selectedElement);
+    const[values,setValues] = useState(selectedElement);
 
     useEffect(() => {
         setValues(selectedElement);
@@ -37,13 +31,16 @@ const EditorPanel = ({selectedElement,onUpdate,onClose}: EditorPanelProps) => {
         return null;
     }
 
-    const handleChange = (field: 'text' | 'className', value:string) => {
+    const handleChange = (field:string, value:string) => {
         const newValues = {...values, [field]: value};
+        if(field in values.styles){
+            newValues.styles = {...values.styles, [field]: value};
+        }
         setValues(newValues);
         onUpdate({[field]: value});
     }  
      
-    const handleStyleChange = (styleName:keyof SelectedElement['styles'], value:string) => {
+    const handleStyleChange = (styleName:string, value:string) => {
         const newStyles = {...values.styles, [styleName]: value};
         setValues({...values, styles: newStyles});
         onUpdate({styles: {[styleName]: value}});

@@ -1,29 +1,28 @@
-import { useEffect, useEffectEvent, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Project } from '../types';
 import { Loader2Icon, PlusIcon} from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { toast } from 'sonner';
 import api from '@/configs/axios';
-import { getErrorMessage } from '@/lib/utils';
 
 const Community = () => {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState<Project[]>([]);
   const navigate = useNavigate();
-  const fetchProjects = useEffectEvent(async () => {
+   const fetchProjects = async () => {
     try {
        const {data} = await api.get('/api/project/published');
        setProjects(data.projects);
        setLoading(false);
-    } catch (error) {
+    } catch (error:any) {
       console.error(error);
-      toast.error(getErrorMessage(error));
-    setLoading(false);
+      toast.error(error?.response?.data?.message || error.message);
     }
-  });
+  
+ }
    useEffect(() => {
-    void fetchProjects();
+      fetchProjects();
    }, []);
   return (
     <>

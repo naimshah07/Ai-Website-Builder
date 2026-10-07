@@ -89,7 +89,7 @@ export const createUserProject = async (req: Request, res: Response) => {
         //Enhace user prompt
 
         const promptEnhanceResponse = await openai.chat.completions.create({
-            model: 'nvidia/nemotron-3-ultra-550b-a55b:free',
+            model: 'google/gemma-4-31b-it:free', 
             messages:[
                 {
                     role: 'system',
@@ -141,7 +141,7 @@ Return only the enhanced prompt.
 
         // Generate website code 
         const codeGenerationResponse = await openai.chat.completions.create({
-            model: 'nvidia/nemotron-3-ultra-550b-a55b:free',
+            model: 'google/gemma-4-31b-it:free',
           
             messages:[
                 {

@@ -7,18 +7,9 @@
 
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import axios from "axios";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
-}
-
-export function getErrorMessage(error: unknown): string {
-  if (axios.isAxiosError<{ message?: string }>(error)) {
-    return error.response?.data?.message ?? error.message;
-  }
-
-  return error instanceof Error ? error.message : "Something went wrong";
 }
 
 // --------------------

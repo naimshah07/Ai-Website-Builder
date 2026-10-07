@@ -1,4 +1,4 @@
-import React, { useEffect, useEffectEvent, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 import { authClient } from "@/lib/auth-client";
@@ -6,7 +6,6 @@ import { UserButton } from "@daveyplate/better-auth-ui";
 import api from "@/configs/axios";
 import { toast } from "sonner";
 import { getTimeGreeting } from "../lib/utils.js";
-import { getErrorMessage } from "../lib/utils.js";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -17,19 +16,19 @@ const Navbar = () => {
    const isLoggedIn = !isPending && session?.user;
   
 
-  const getCredits = useEffectEvent(async () => {
+  const getCredits = async () => {
     try {
       const { data } = await api.get("/api/user/credits");
       setCredits(data.credits);
-    } catch (error) {
-      toast.error(getErrorMessage(error));
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
       console.log(error);
     }
-  });
+  };
 
   useEffect(() => {
     if (session?.user) {
-      void getCredits();
+      getCredits();
     }
   }, [session?.user]);
 
@@ -132,7 +131,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-100 bg-black/60 text-white backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300">
+        <div className="fixed inset-0 z-[100] bg-black/60 text-white backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300">
           <Link to="/" onClick={() => setMenuOpen(false)}>
             Home
           </Link>
