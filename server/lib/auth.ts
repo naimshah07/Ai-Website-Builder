@@ -139,7 +139,7 @@ export const auth = betterAuth({
       <p>Hi ${user.name} 👋</p>
       <p>Your password was successfully changed.</p>
       <p>If this wasn’t you, please reset your password immediately.</p>
-      <p> — Rati Ranjan</p>`,
+      <p> — Naim Shah</p>`,
       });
       // you can add audit log, notification, etc. here
     },
