@@ -120,14 +120,14 @@ const Projects = () => {
     return (
       <>
         <div className="flex items-center justify-center h-screen">
-          <Loader2Icon className="size-10 animate-spin text-violet-200" />
+          <Loader2Icon className="size-10 animate-spin text-primary" />
         </div>
       </>
     );
   }
 
   return project ? (
-    <div className="flex flex-col h-screen w-full bg-gray-900 text-white">
+    <div className="flex flex-col h-screen w-full bg-background text-foreground">
       {/* {builder nav} */}
       <div className="flex max-sm:flex-col sm:items-center gap-4 px-4 py-2 no-scrollbar">
         {/* left col */}
@@ -142,7 +142,7 @@ const Projects = () => {
             <p className="text-sm text-medium capitalize truncate">
               {project.name}
             </p>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Previewing last saved version
             </p>
           </div>
@@ -161,19 +161,19 @@ const Projects = () => {
           </div>
         </div>
     {/* center col */}
-<div className="hidden sm:flex gap-2 bg-gray-950 p-1.5 rounded-md">
+<div className="hidden sm:flex gap-2 bg-card p-1.5 rounded-md border border-border">
 
   {/* Phone */}
   <div className="relative group">
     <SmartphoneIcon
       onClick={() => setDevice("phone")}
       className={`size-6 p-1 rounded cursor-pointer transition ${
-        device === "phone" ? "bg-gray-700" : "hover:bg-gray-800"
+        device === "phone" ? "bg-primary text-primary-foreground" : "hover:bg-muted"
       }`}
     />
     <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 
                      opacity-0 group-hover:opacity-100
-                     bg-gray-800 text-xs text-white px-2 py-1 rounded
+                     bg-muted text-xs text-foreground px-2 py-1 rounded
                      transition-all duration-200 pointer-events-none">
       Phone
     </span>
@@ -184,12 +184,12 @@ const Projects = () => {
     <TabletIcon
       onClick={() => setDevice("tablet")}
       className={`size-6 p-1 rounded cursor-pointer transition ${
-        device === "tablet" ? "bg-gray-700" : "hover:bg-gray-800"
+        device === "tablet" ? "bg-primary text-primary-foreground" : "hover:bg-muted"
       }`}
     />
     <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 
                      opacity-0 group-hover:opacity-100
-                     bg-gray-800 text-xs text-white px-2 py-1 rounded
+                     bg-muted text-xs text-foreground px-2 py-1 rounded
                      transition-all duration-200 pointer-events-none">
       Tablet
     </span>
@@ -200,12 +200,12 @@ const Projects = () => {
     <LaptopIcon
       onClick={() => setDevice("desktop")}
       className={`size-6 p-1 rounded cursor-pointer transition ${
-        device === "desktop" ? "bg-gray-700" : "hover:bg-gray-800"
+        device === "desktop" ? "bg-primary text-primary-foreground" : "hover:bg-muted"
       }`}
     />
     <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 
                      opacity-0 group-hover:opacity-100
-                     bg-gray-800 text-xs text-white px-2 py-1 rounded
+                     bg-muted text-xs text-foreground px-2 py-1 rounded
                      transition-all duration-200 pointer-events-none">
       Desktop
     </span>
@@ -218,7 +218,7 @@ const Projects = () => {
           <button
             onClick={saveProject}
             disabled={isSaving}
-            className="max-sm:hidden bg-gray-800 hover:bg-gray-700 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors border border-gray-700"
+            className="max-sm:hidden bg-card hover:bg-muted text-foreground px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors border border-border"
           >
             {isSaving ? (
               <Loader2Icon className="animate-spin" size={16} />
@@ -232,7 +232,7 @@ const Projects = () => {
               e.stopPropagation();
               window.open(`/preview/${projectId}`, "_blank");
             }}
-            className="flex items-center gap-2 px-4 py-1 rounded sm:rounded-sm border border-gray-700 hover:border-gray-500 transition-colors"
+            className="flex items-center gap-2 px-4 py-1 rounded sm:rounded-sm border border-border hover:border-primary/60 transition-colors"
           >
             <FullscreenIcon size={16} />
             Preview
@@ -243,13 +243,13 @@ const Projects = () => {
          </Link> */}
           <button
             onClick={downloadCode}
-            className="bg-linear-to-br from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors"
+            className="bg-linear-to-br from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors shadow-md"
           >
             <ArrowBigDownDashIcon size={16} /> Download
           </button>
           <button
             onClick={togglePublish}
-            className="bg-linear-to-br from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors"
+            className="bg-linear-to-br from-accent to-primary hover:from-accent/90 hover:to-primary/90 text-primary-foreground px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors shadow-md"
           >
             {project.isPublished ? (
               <EyeOffIcon size={16} />
@@ -280,7 +280,7 @@ const Projects = () => {
     </div>
   ) : (
     <div className="flex items-center justify-center h-screen">
-      <p className="text-2xl font-medium text-gray-200">
+      <p className="text-2xl font-medium text-foreground/70">
         Unable to load the project🫠
       </p>
     </div>

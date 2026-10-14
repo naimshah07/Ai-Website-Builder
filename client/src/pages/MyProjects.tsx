@@ -64,17 +64,17 @@ const MyProjects = () => {
         {loading ? (
           /* Loader */
           <div className="flex items-center justify-center min-h-[80vh]">
-            <Loader2Icon className="animate-spin size-10 text-indigo-400" />
+            <Loader2Icon className="animate-spin size-10 text-primary" />
           </div>
         ) : projects.length > 0 ? (
           /* Projects List */
           <div className="py-10 min-h-[80vh]">
             <div className="flex items-center justify-between mb-12">
-              <h1 className="text-2xl font-semibold text-white">My Projects</h1>
+              <h1 className="text-2xl font-semibold text-foreground">My Projects</h1>
 
               <button
                 onClick={() => navigate("/")}
-                className="flex items-center gap-2 text-white px-6 py-2 rounded bg-gradient-to-br from-indigo-500 to-indigo-600 hover:opacity-90 active:scale-95 transition-all"
+                className="flex items-center gap-2 text-primary-foreground px-6 py-2 rounded bg-gradient-to-br from-primary to-primary/85 hover:opacity-90 active:scale-95 transition-all shadow-md"
               >
                 <PlusIcon size={18} />
                 Create New
@@ -87,10 +87,10 @@ const MyProjects = () => {
                 <div
                   onClick={() => navigate(`/projects/${project.id}`)}
                   key={project.id}
-                  className="relative group w-full max-w-[18rem] h-full flex flex-col max-sm:mx-auto cursor-pointer bg-gray-900/60 border border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-indigo-700/30 hover:border-indigo-800/80 transition-all duration-300"
+                  className="relative group w-full max-w-[18rem] h-full flex flex-col max-sm:mx-auto cursor-pointer bg-card border border-border rounded-lg overflow-hidden shadow-md hover:shadow-primary/30 hover:border-primary/60 transition-all duration-300"
                 >
                   {/* Preview */}
-                  <div className="relative w-full h-40 bg-gray-900 overflow-hidden border-b border-gray-800">
+                  <div className="relative w-full h-40 bg-muted overflow-hidden border-b border-border">
                     {project.current_code ? (
                       <iframe
                         srcDoc={project.current_code}
@@ -98,7 +98,7 @@ const MyProjects = () => {
                         sandbox="allow-scripts allow-same-origin"
                       />
                     ) : (
-                      <div className="flex items-center justify-center h-full text-gray-500">
+                      <div className="flex items-center justify-center h-full text-muted-foreground">
                         No Preview Available
                       </div>
                     )}
@@ -108,42 +108,42 @@ const MyProjects = () => {
                         e.stopPropagation();
                         deleteProject(project.id);
                       }}
-                      className="absolute top-3 right-3 z-20 scale-0 group-hover:scale-100 bg-white p-1.5 size-7 rounded text-red-500 cursor-pointer shadow hover:scale-110 transition-all duration-200"
+                      className="absolute top-3 right-3 z-20 scale-0 group-hover:scale-100 bg-background p-1.5 size-7 rounded text-destructive cursor-pointer shadow hover:scale-110 transition-all duration-200"
                     />
                   </div>
 
                   {/* Content */}
-                  <div className="relative z-10 p-4 text-white bg-gradient-to-b from-transparent via-gray-900/80 to-gray-900 flex flex-col flex-1">
+                  <div className="relative z-10 p-4 text-foreground bg-gradient-to-b from-transparent via-card/80 to-card flex flex-col flex-1">
                     <div className="flex items-start justify-between">
                       <h2 className="text-lg font-medium line-clamp-2">
                         {project.name}
                       </h2>
 
-                      <span className="px-2.5 py-0.5 ml-2 text-xs bg-gray-800 border border-gray-700 rounded-full">
+                      <span className="px-2.5 py-0.5 ml-2 text-xs bg-muted border border-border rounded-full">
                         Website
                       </span>  
                     </div>
 
-                    <p className="text-gray-400 mt-1 text-sm line-clamp-2">
+                    <p className="text-muted-foreground mt-1 text-sm line-clamp-2">
                       {project.initial_prompt}
                     </p>
                     <div
                       onClick={(e) => e.stopPropagation()}
                       className="flex justify-between items-center mt-6"
                     >
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-muted-foreground">
                         {new Date(project.createdAt).toLocaleDateString()}
                       </span>
-                      <div className="flex flex-wrap gap-2 text-white text-xs sm:text-sm">
+                      <div className="flex flex-wrap gap-2 text-foreground text-xs sm:text-sm">
                         <button
                           onClick={() => navigate(`/preview/${project.id}`)}
-                          className="px-2 sm:px-3 py-1.5 bg-white/10 hover:bg-white/15 rounded-md transition-all"
+                          className="px-2 sm:px-3 py-1.5 bg-foreground/10 hover:bg-foreground/15 rounded-md transition-all"
                         >
                           Preview
                         </button>
                         <button
                           onClick={() => navigate(`/projects/${project.id}`)}
-                          className="px-2 sm:px-3 py-1.5 bg-white/10 hover:bg-white/15 rounded-md transition-all"
+                          className="px-2 sm:px-3 py-1.5 bg-foreground/10 hover:bg-foreground/15 rounded-md transition-all"
                         >
                           Open
                         </button>
@@ -157,13 +157,13 @@ const MyProjects = () => {
         ) : (
           /* Empty State */
           <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
-            <h2 className="text-3xl font-semibold text-gray-200">
+            <h2 className="text-3xl font-semibold text-foreground/80">
               You have no projects yet!
             </h2>
 
             <button
               onClick={() => navigate("/")}
-              className="flex items-center gap-2 mt-6 text-white px-6 py-2 rounded-md bg-indigo-500 hover:bg-indigo-600 active:scale-95 transition-all"
+              className="flex items-center gap-2 mt-6 text-primary-foreground px-6 py-2 rounded-md bg-primary hover:bg-primary/90 active:scale-95 transition-all shadow-md"
             >
               <PlusIcon size={18} />
               Create New

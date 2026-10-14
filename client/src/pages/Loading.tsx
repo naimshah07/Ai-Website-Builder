@@ -14,7 +14,7 @@ useEffect(() => {
   return (
     <div className='h-screen flex flex-col'>
         <div className='flex items-center justify-center flex-1'>
-            <Loader2Icon className=" size-7 animate-spin h-8 w-8 text-indigo-300" />
+            <Loader2Icon className=" size-7 animate-spin h-8 w-8 text-primary" />
         </div>
     </div>
   )

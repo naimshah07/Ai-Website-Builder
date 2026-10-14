@@ -56,22 +56,22 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="z-50 flex items-center justify-between w-full py-4 px-4 md:px-16 lg:px-24 xl:px-32 backdrop-blur border-b text-white border-slate-800">
+      <nav className="z-50 flex items-center justify-between w-full py-4 px-4 md:px-16 lg:px-24 xl:px-32 backdrop-blur border-b text-foreground border-border">
         <Link to="/">
           <img src={assets.logo} alt="" className="h-5 sm:h-7" />
         </Link>
 
         <div className="hidden md:flex items-center gap-8 transition duration-500">
-          <Link to="/" className="hover:text-slate-300 transition">
+          <Link to="/" className="hover:text-primary transition">
             Home
           </Link>
-          <Link to="/projects" className="hover:text-slate-300 transition">
+          <Link to="/projects" className="hover:text-primary transition">
             My Projects
           </Link>
-          <Link to="/community" className="hover:text-slate-300 transition">
+          <Link to="/community" className="hover:text-primary transition">
             Community
           </Link>
-          <Link to="/pricing" className="hover:text-slate-300 transition">
+          <Link to="/pricing" className="hover:text-primary transition">
             Pricing
           </Link>
         </div>
@@ -81,24 +81,24 @@ const Navbar = () => {
            {!isLoggedIn ? (
             <button
               onClick={() => navigate("/auth/signin")}
-              className="px-6 py-1.5 max-sm:text-sm bg-indigo-600 active:scale-95 hover:bg-indigo-700 transition rounded"
+              className="px-6 py-1.5 max-sm:text-sm bg-primary text-primary-foreground active:scale-95 hover:bg-primary/90 transition rounded shadow-md"
             >
               Get started
             </button>
           ) : (
             <>
               {/* Greeting */}
-              <div className="hidden sm:flex items-center text-sm text-gray-300 mr-2">
-                <span className="text-slate-400">{getTimeGreeting()},</span>
-                <span className="ml-1 font-medium text-white">
+              <div className="hidden sm:flex items-center text-sm text-muted-foreground mr-2">
+                <span className="text-muted-foreground">{getTimeGreeting()},</span>
+                <span className="ml-1 font-medium text-foreground">
                   {session.user.name}
                 </span>
                 👋
               </div>
 
               {/* Credits and UserButton */}
-              <button className="bg-white/10 px-5 py-1.5 text-xs sm:text-sm border text-gray-200 rounded-full">
-                Credits:<span className="text-indigo-300">{credits}</span>
+              <button className="bg-foreground/10 px-5 py-1.5 text-xs sm:text-sm border border-border text-foreground/80 rounded-full">
+                Credits:<span className="text-primary ml-1">{credits}</span>
               </button>
               <UserButton size="icon" />
             </>
@@ -131,7 +131,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-[100] bg-black/60 text-white backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300">
+        <div className="fixed inset-0 z-[100] bg-background/80 text-foreground backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300">
           <Link to="/" onClick={() => setMenuOpen(false)}>
             Home
           </Link>
@@ -146,7 +146,7 @@ const Navbar = () => {
           </Link>
 
           <button
-            className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-slate-100 hover:bg-slate-200 transition text-black rounded-md flex"
+            className="active:ring-3 active:ring-foreground aspect-square size-10 p-1 items-center justify-center bg-muted hover:bg-muted/80 transition text-foreground rounded-md flex"
             onClick={() => setMenuOpen(false)}
           >
             <svg
@@ -166,11 +166,13 @@ const Navbar = () => {
           </button>
         </div>
       )}
-      {/* BACKGROUND IMAGE */}
-      <img
-        src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/refs/heads/main/assets/hero/bg-gradient-2.png"
-        className="absolute inset-0 -z-10 size-full opacity"
-        alt=""
+      {/* BACKGROUND GLOW */}
+      <div
+        className="absolute inset-0 -z-10 size-full"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 35%, color-mix(in oklch, var(--primary) 55%, transparent), transparent 70%)",
+        }}
       />
     </>
   );
